@@ -5,6 +5,7 @@ frontend:
         deploy:
             - npm install --legacy-peer-deps
             - npm run build
+    subdomain: black-dashboard-react
 name: black-dashboard-react
 region: us-east-1
 yamlVersion: 2
