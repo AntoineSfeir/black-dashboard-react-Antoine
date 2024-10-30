@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import { Line, Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import {
   Button,
   ButtonGroup,

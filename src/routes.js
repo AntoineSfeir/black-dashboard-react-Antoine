@@ -1,11 +1,12 @@
 // Import the component files
 import EnergyGHG from "views/energy_ghg";
 import TEBA from "views/teba";
-import FlareEmission from "views/flare_emisson.js";
+import HIPAFlareEmission from "views/HIPA_flare_emisson.js";
 import LeakCalculations from "views/leak_calculations";
 import EnvironmentalMassBalance from "views/environmental_mass_balance";
 import FencelineMassBalance from "views/fenceline_mass_balance";
 import Dashboard from "./views/Dashboard";
+import OleFinsFlareEmission from "views/olefins_flare_emission";
 
 const routes = [
   {
@@ -30,10 +31,17 @@ const routes = [
     layout: "/admin",
   },
   {
-    path: "/flare-emission",
-    name: "Flare Emission",
+    path: "/hipa-flare-emission",
+    name: "HIPA Flare Emission",
     icon: "tim-icons icon-bell-55",
-    component: FlareEmission,
+    component: HIPAFlareEmission,
+    layout: "/admin",
+  },
+  {
+    path: "/olefins-flare-emission",
+    name: "Olefins Flare Emission",
+    icon: "tim-icons icon-bell-55",
+    component: OleFinsFlareEmission,
     layout: "/admin",
   },
   {
