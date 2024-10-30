@@ -153,7 +153,7 @@ function EnvironmentalMassBalance() {
                 </thead>
                 <tbody>
                   {filteredData.map((row, index) => (
-                    <tr key={index} style={{ backgroundColor: row.ClosingBalance > 150 ? "#ffcccc" : "" }}>
+                    <tr key={index} style={{ backgroundColor: row.ClosingBalance > 150 ? "#4f8df0" : "" }}>
                       <td>{row.Unit}</td>
                       <td>{row.Input}</td>
                       <td>{row.Output}</td>

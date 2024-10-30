@@ -10,13 +10,15 @@ import OleFinsFlareEmission from "views/olefins_flare_emission";
 
 const routes = [
   {
+    category: "Overview",
     path: "/dashboard",
     name: "Dashboard",
-    icon: "tim-icons icon-chart-pie-36", // Choose an icon for the Dashboard
+    icon: "tim-icons icon-chart-pie-36",
     component: Dashboard,
     layout: "/admin",
   },
   {
+    category: "Energy & Emissions",
     path: "/energy-ghg",
     name: "Energy & GHG Intensity",
     icon: "tim-icons icon-chart-bar-32",
@@ -24,27 +26,7 @@ const routes = [
     layout: "/admin",
   },
   {
-    path: "/teba",
-    name: "Top Energy Bad Actors (TEBA)",
-    icon: "tim-icons icon-alert-circle-exc",
-    component: TEBA,
-    layout: "/admin",
-  },
-  {
-    path: "/hipa-flare-emission",
-    name: "HIPA Flare Emission",
-    icon: "tim-icons icon-bell-55",
-    component: HIPAFlareEmission,
-    layout: "/admin",
-  },
-  {
-    path: "/olefins-flare-emission",
-    name: "Olefins Flare Emission",
-    icon: "tim-icons icon-bell-55",
-    component: OleFinsFlareEmission,
-    layout: "/admin",
-  },
-  {
+    category: "Energy & Emissions",
     path: "/leak-calculations",
     name: "Leak Calculations",
     icon: "tim-icons icon-settings-gear-63",
@@ -52,6 +34,31 @@ const routes = [
     layout: "/admin",
   },
   {
+    category: "Energy & Emissions",
+    path: "/teba",
+    name: "Top Energy Bad Actors (TEBA)",
+    icon: "tim-icons icon-alert-circle-exc",
+    component: TEBA,
+    layout: "/admin",
+  },
+  {
+    category: "Flare Emission",
+    path: "/hipa-flare-emission",
+    name: "HIPA Flare Emission",
+    icon: "tim-icons icon-bell-55",
+    component: HIPAFlareEmission,
+    layout: "/admin",
+  },
+  {
+    category: "Flare Emission",
+    path: "/olefins-flare-emission",
+    name: "Olefins Flare Emission",
+    icon: "tim-icons icon-bell-55",
+    component: OleFinsFlareEmission,
+    layout: "/admin",
+  },
+  {
+    category: "Mass Balance",
     path: "/environmental-mass-balance",
     name: "Environmental Mass Balance",
     icon: "tim-icons icon-world",
@@ -59,6 +66,7 @@ const routes = [
     layout: "/admin",
   },
   {
+    category: "Mass Balance",
     path: "/fenceline-mass-balance",
     name: "Fenceline Mass Balance",
     icon: "tim-icons icon-map-big",

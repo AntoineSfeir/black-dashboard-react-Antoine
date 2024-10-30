@@ -807,7 +807,7 @@ function OlefinsFlareEmission() {
                             style={{
                               backgroundColor:
                                 entry[param.name] > filterValue
-                                  ? "#ffcccc"
+                                  ? "#4f8df0"
                                   : "inherit",
                             }}
                           >

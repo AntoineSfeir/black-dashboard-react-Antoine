@@ -258,7 +258,7 @@ function TEBA() {
                 </thead>
                 <tbody>
                   {filteredData.map((row, index) => (
-                    <tr key={index} style={{ backgroundColor: row.CostPerMonth > 50000 ? "#ffcccc" : "" }}>
+                    <tr key={index} style={{ backgroundColor: row.CostPerMonth > 50000 ? "#4f8df0" : "" }}>
                       <td>{row.Unit}</td>
                       <td>{row.EnergyDriver}</td>
                       <td>{row.CostPerMonth.toLocaleString()}</td>

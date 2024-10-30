@@ -58,76 +58,6 @@ function HIPAFlareEmission() {
     return data;
   }
 
-  // Hardcoded data for demonstration purposes
-  const flareEmissionData = [
-    {
-      Month: "January",
-      FlareVolume: 500,
-      CO2Emissions: 1200,
-      NOxEmissions: 50,
-      MethaneEmissions: 25.2,
-    },
-    {
-      Month: "February",
-      FlareVolume: 450,
-      CO2Emissions: 1100,
-      NOxEmissions: 45,
-      MethaneEmissions: 20.5,
-    },
-    {
-      Month: "March",
-      FlareVolume: 600,
-      CO2Emissions: 1500,
-      NOxEmissions: 60,
-      MethaneEmissions: 30.0,
-    },
-    {
-      Month: "April",
-      FlareVolume: 700,
-      CO2Emissions: 1700,
-      NOxEmissions: 70,
-      MethaneEmissions: 28.4,
-    },
-    {
-      Month: "May",
-      FlareVolume: 550,
-      CO2Emissions: 1300,
-      NOxEmissions: 55,
-      MethaneEmissions: 27.0,
-    },
-  ];
-
-  // Prepare chart data based on hardcoded data
-  const lineData = {
-    labels: flareEmissionData.map((row) => row.Month),
-    datasets: [
-      {
-        label: "Flare Volume (m³)",
-        data: flareEmissionData.map((row) => row.FlareVolume),
-        fill: false,
-        borderColor: "rgba(255, 206, 86, 1)",
-      },
-      {
-        label: "CO2 Emissions (tons)",
-        data: flareEmissionData.map((row) => row.CO2Emissions),
-        fill: false,
-        borderColor: "rgba(75, 192, 192, 1)",
-      },
-      {
-        label: "NOx Emissions (kg)",
-        data: flareEmissionData.map((row) => row.NOxEmissions),
-        fill: false,
-        borderColor: "rgba(255, 99, 132, 1)",
-      },
-      {
-        label: "Methane Emissions (tons)",
-        data: flareEmissionData.map((row) => row.MethaneEmissions),
-        fill: false,
-        borderColor: "rgba(153, 102, 255, 1)",
-      },
-    ],
-  };
-
   // Initial state for selected date range and sample data
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -210,67 +140,50 @@ function HIPAFlareEmission() {
 
   return (
     <div className="content">
-      <Row>
-        <Col xs="12">
-          <Card className="card-chart">
-            <CardHeader>
-              <CardTitle tag="h2">HIPA Flare Emission</CardTitle>
-              <p>This page tracks and reports flare emissions.</p>
-            </CardHeader>
-            <CardBody>
-              <div className="chart-area">
-                <Line data={lineData} options={{ responsive: true }} />
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-
       {/* Date Range Selection */}
       <Row>
+      <Col xs="12">
+          <Card className="card-chart">
+            <CardHeader className="text-center">
+              <CardTitle tag="h2">HIPA Flare Emission Dashboard</CardTitle>
+              <p style={{ fontSize: "1.1rem" }}>
+                Visual insights into HIPA flare emissions
+              </p>
+            </CardHeader>
+          </Card>
+        </Col>
         <Col xs="12">
           <Card>
             <CardHeader>
-              <CardTitle tag="h2">HIPA Flare - Time Series Data</CardTitle>
-              <p>
-                Select a date and time range to view hourly data for various
-                parameters.
-              </p>
+              <CardTitle tag="h2">Select Date Range</CardTitle>
             </CardHeader>
-            <CardBody>
+            <div style={{ padding: "20px" }}>
               <Row>
-                <Col md="6">
-                  <FormGroup>
-                    <Label for="startDate">Start Date & Time</Label>
-                    <DatePicker
-                      id="startDate"
-                      selected={startDate}
-                      onChange={(date) => setStartDate(date)}
-                      showTimeSelect
-                      dateFormat="Pp"
-                      className="form-control"
-                    />
-                  </FormGroup>
+                <Col md="6" className="mb-3">
+                  <label className="fw-bold">Start Date & Time</label>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    showTimeSelect
+                    dateFormat="Pp"
+                    className="form-control"
+                  />
                 </Col>
-                <Col md="6">
-                  <FormGroup>
-                    <Label for="endDate">End Date & Time</Label>
-                    <DatePicker
-                      id="endDate"
-                      selected={endDate}
-                      onChange={(date) => setEndDate(date)}
-                      showTimeSelect
-                      dateFormat="Pp"
-                      className="form-control"
-                    />
-                  </FormGroup>
+                <Col md="6" className="mb-3">
+                  <label className="fw-bold">End Date & Time</label>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    showTimeSelect
+                    dateFormat="Pp"
+                    className="form-control"
+                  />
                 </Col>
               </Row>
-            </CardBody>
+            </div>
           </Card>
         </Col>
       </Row>
-
       {/* Parameter Selection */}
       <Row>
         <Col xs="12">
@@ -455,7 +368,7 @@ function HIPAFlareEmission() {
                             style={{
                               backgroundColor:
                                 entry[param.name] > filterValue
-                                  ? "#ffcccc"
+                                  ? "#4f8df0"
                                   : "inherit",
                             }}
                           >

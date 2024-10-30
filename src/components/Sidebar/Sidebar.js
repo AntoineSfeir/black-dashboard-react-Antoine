@@ -1,126 +1,70 @@
-
-/*eslint-disable*/
-import React from "react";
-import { NavLink, Link, useLocation } from "react-router-dom";
-// nodejs library to set properties for components
-import { PropTypes } from "prop-types";
-
-// javascript plugin used to create scrollbars on windows
+import React, { useState, useRef, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
+import routes from "routes.js";
+import { BackgroundColorContext } from "contexts/BackgroundColorContext";
 
-// reactstrap components
-import { Nav, NavLink as ReactstrapNavLink } from "reactstrap";
-import {
-  BackgroundColorContext,
-  backgroundColors,
-} from "contexts/BackgroundColorContext";
-
-var ps;
+let ps; // Declare PerfectScrollbar instance
 
 function Sidebar(props) {
-  const location = useLocation();
-  const sidebarRef = React.useRef(null);
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return location.pathname === routeName ? "active" : "";
-  };
-  React.useEffect(() => {
+  const [setOpenSections] = useState({});
+  const sidebarRef = useRef(null);
+
+  // Initialize PerfectScrollbar on mount and clean up on unmount
+  useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(sidebarRef.current, {
         suppressScrollX: true,
         suppressScrollY: false,
       });
     }
-    // Specify how to clean up after this effect:
     return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1) {
+      if (navigator.platform.indexOf("Win") > -1 && ps) {
         ps.destroy();
       }
     };
-  });
-  const linkOnClick = () => {
-    document.documentElement.classList.remove("nav-open");
+  }, []);
+
+  // Toggle collapse sections
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
-  const { routes, rtlActive, logo } = props;
-  let logoImg = null;
-  let logoText = null;
-  if (logo !== undefined) {
-    if (logo.outterLink !== undefined) {
-      logoImg = (
-        <a
-          href={logo.outterLink}
-          className="simple-text logo-mini"
-          target="_blank"
-          onClick={props.toggleSidebar}
-        >
-        
-        </a>
-      );
-      logoText = (
-        <a
-          href={logo.outterLink}
-          className="simple-text logo-normal"
-          target="_blank"
-          onClick={props.toggleSidebar}
-        >
-          {logo.text}
-        </a>
-      );
-    } else {
-      logoImg = (
-        <Link
-          to={logo.innerLink}
-          className="simple-text logo-mini"
-          onClick={props.toggleSidebar}
-        >
-          <div className="logo-img">
-            <img src={logo.imgSrc} alt="react-logo" />
-          </div>
-        </Link>
-      );
-      logoText = (
-        <Link
-          to={logo.innerLink}
-          className="simple-text logo-normal"
-          onClick={props.toggleSidebar}
-        >
-          {logo.text}
-        </Link>
-      );
-    }
-  }
+
+  // Checks if the current route is active
+  const activeRoute = (routeName) => {
+    return window.location.pathname === routeName ? "active" : "";
+  };
+
+  // Group routes by category
+  const groupedRoutes = routes.reduce((acc, route) => {
+    const category = route.category || "Other";
+    if (!acc[category]) acc[category] = [];
+    acc[category].push(route);
+    return acc;
+  }, {});
+
   return (
     <BackgroundColorContext.Consumer>
       {({ color }) => (
         <div className="sidebar" data={color}>
           <div className="sidebar-wrapper" ref={sidebarRef}>
-            {logoImg !== null || logoText !== null ? (
-              <div className="logo">
-                {logoImg}
-                {logoText}
-              </div>
-            ) : null}
             <Nav>
-              {routes.map((prop, key) => {
-                if (prop.redirect) return null;
-                return (
-                  <li
-                    className={
-                      activeRoute(prop.path) + (prop.pro ? " active-pro" : "")
-                    }
-                    key={key}
-                  >
-                    <NavLink
-                      to={prop.layout + prop.path}
-                      className="nav-link"
-                      onClick={props.toggleSidebar}
-                    >
-                      <i className={prop.icon} />
-                      <p>{rtlActive ? prop.rtlName : prop.name}</p>
-                    </NavLink>
+              {Object.keys(groupedRoutes).map((category, key) => (
+                <React.Fragment key={key}>
+                  <li className="nav-category" onClick={() => toggleSection(category)}>
+                    <p>{category}</p>
                   </li>
-                );
-              })}
+                    {groupedRoutes[category].map((prop, key) => (
+                      <li key={key} className={activeRoute(prop.path) ? "active" : ""}>
+                        <NavLink to={prop.layout + prop.path} className="nav-link">
+                          <i className={prop.icon} />
+                          <p>{prop.name}</p>
+                        </NavLink>
+                      </li>
+                    ))}
+                </React.Fragment>
+              ))}
             </Nav>
           </div>
         </div>
@@ -128,24 +72,5 @@ function Sidebar(props) {
     </BackgroundColorContext.Consumer>
   );
 }
-
-Sidebar.propTypes = {
-  // if true, then instead of the routes[i].name, routes[i].rtlName will be rendered
-  // insde the links of this component
-  rtlActive: PropTypes.bool,
-  routes: PropTypes.arrayOf(PropTypes.object),
-  logo: PropTypes.shape({
-    // innerLink is for links that will direct the user within the app
-    // it will be rendered as <Link to="...">...</Link> tag
-    innerLink: PropTypes.string,
-    // outterLink is for links that will direct the user outside the app
-    // it will be rendered as simple <a href="...">...</a> tag
-    outterLink: PropTypes.string,
-    // the text of the logo
-    text: PropTypes.node,
-    // the image src of the logo
-    imgSrc: PropTypes.string,
-  }),
-};
 
 export default Sidebar;

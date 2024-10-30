@@ -149,7 +149,7 @@ function FencelineMassBalance() {
                 </thead>
                 <tbody>
                   {filteredData.map((row, index) => (
-                    <tr key={index} style={{ backgroundColor: row.ClosingBalance > 50 ? "#ffcccc" : "" }}>
+                    <tr key={index} style={{ backgroundColor: row.ClosingBalance > 50 ? "#4f8df0" : "" }}>
                       <td>{row.Area}</td>
                       <td>{row.EmissionsIn}</td>
                       <td>{row.EmissionsOut}</td>
