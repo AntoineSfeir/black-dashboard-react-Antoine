@@ -388,45 +388,43 @@ function Dashboard(props) {
     },
   };
 
+  // Sample equipment data with coordinates and alert levels
+  const equipmentData = [
+    {
+      id: 1,
+      name: "Furnace 44",
+      location: [29.7604, -95.3698], // Houston coordinates
+      alertLevel: "High",
+    },
+    {
+      id: 2,
+      name: "Pump 32",
+      location: [29.7499, -95.3584], // Nearby location
+      alertLevel: "Medium",
+    },
+    {
+      id: 3,
+      name: "Compressor 19",
+      location: [29.7614, -95.3575],
+      alertLevel: "Low",
+    },
+  ];
 
-// Sample equipment data with coordinates and alert levels
-const equipmentData = [
-  {
-    id: 1,
-    name: "Furnace 44",
-    location: [29.7604, -95.3698], // Houston coordinates
-    alertLevel: "High",
-  },
-  {
-    id: 2,
-    name: "Pump 32",
-    location: [29.7499, -95.3584], // Nearby location
-    alertLevel: "Medium",
-  },
-  {
-    id: 3,
-    name: "Compressor 19",
-    location: [29.7614, -95.3575],
-    alertLevel: "Low",
-  },
-];
-
-// Custom icons based on alert level
-const icons = {
-  High: new L.Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/2107/2107845.png",
-    iconSize: [25, 25],
-  }),
-  Medium: new L.Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/190/190406.png",
-    iconSize: [25, 25],
-  }),
-  Low: new L.Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
-    iconSize: [25, 25],
-  }),
-};
-
+  // Custom icons based on alert level
+  const icons = {
+    High: new L.Icon({
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/2107/2107845.png",
+      iconSize: [25, 25],
+    }),
+    Medium: new L.Icon({
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/190/190406.png",
+      iconSize: [25, 25],
+    }),
+    Low: new L.Icon({
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
+      iconSize: [25, 25],
+    }),
+  };
 
   return (
     <>
@@ -800,35 +798,57 @@ const icons = {
           </Col>
         </Row>
 
-<Row>
-  <Col lg="12">
-    <Card className="shadow-sm" style={{ height: "450px", borderRadius: "8px" }}>
-      <CardHeader>
-        <CardTitle tag="h4" className="text-light">Equipment and Alerts Map</CardTitle>
-      </CardHeader>
-      <CardBody style={{ padding: "0" }}>
-        <MapContainer center={[29.7604, -95.3698]} zoom={10} style={{ height: "100%", width: "100%" }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          {equipmentData.map((equipment) => (
-            <Marker
-              key={equipment.id}
-              position={equipment.location}
-              icon={icons[equipment.alertLevel]}
+        <Row>
+          <Col lg="12">
+            <Card
+              className="shadow-sm"
+              style={{ height: "450px", borderRadius: "8px" }}
             >
-              <Popup>
-                <strong>{equipment.name}</strong><br />
-                Alert Level: <span style={{ color: equipment.alertLevel === "High" ? "red" : equipment.alertLevel === "Medium" ? "orange" : "green" }}>{equipment.alertLevel}</span>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      </CardBody>
-    </Card>
-  </Col>
-</Row>
+              <CardHeader>
+                <CardTitle tag="h4" className="text-light">
+                  Equipment and Alerts Map
+                </CardTitle>
+              </CardHeader>
+              <CardBody style={{ padding: "0" }}>
+                <MapContainer
+                  center={[29.7604, -95.3698]}
+                  zoom={10}
+                  style={{ height: "100%", width: "100%" }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  {equipmentData.map((equipment) => (
+                    <Marker
+                      key={equipment.id}
+                      position={equipment.location}
+                      icon={icons[equipment.alertLevel]}
+                    >
+                      <Popup>
+                        <strong>{equipment.name}</strong>
+                        <br />
+                        Alert Level:{" "}
+                        <span
+                          style={{
+                            color:
+                              equipment.alertLevel === "High"
+                                ? "red"
+                                : equipment.alertLevel === "Medium"
+                                ? "orange"
+                                : "green",
+                          }}
+                        >
+                          {equipment.alertLevel}
+                        </span>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </MapContainer>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
         {/* Real-Time Emissions Monitoring Section */}
         <Row className="justify-content-center">
@@ -947,9 +967,7 @@ const icons = {
               </CardBody>
             </Card>
           </Col>
-          <Col lg="6" md="12">
-   
-  </Col>
+          <Col lg="6" md="12"></Col>
         </Row>
       </div>
     </>
