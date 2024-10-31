@@ -191,7 +191,7 @@ function OlefinsFlareEmission() {
   ); // All parameters selected by default
   const [baseParameter, setBaseParameter] = useState(parameters[0].name); // Default base parameter for ratio calculation
   const [highlightedValue, setHighlightedValue] = useState(null);
-  const [filterValue, setFilterValue] = useState(0);
+  const [filterValue, setFilterValue] = useState(null);
   const filteredPilotData = sampleData.pilot_data_analysis.filter((data) => {
     const dataDate = new Date(data.timestamp);
     return dataDate >= startDate && dataDate <= endDate;
@@ -487,12 +487,12 @@ function OlefinsFlareEmission() {
           <Card>
             <CardHeader>
               <CardTitle tag="h2">Annual Emission Limits</CardTitle>
-              <p className="text-muted">
+              <p className="text-bold">
                 Emission limits (ton/year) for various pollutants
               </p>
             </CardHeader>
             <Table responsive bordered hover>
-              <thead className="table-light">
+              <thead className="table-tb">
                 <tr>
                   <th>Pollutant</th>
                   <th>Emission Limit (ton/yr)</th>
@@ -534,7 +534,7 @@ function OlefinsFlareEmission() {
           <Card>
             <CardHeader>
               <CardTitle tag="h2">Emissions Summary</CardTitle>
-              <p className="text-muted">
+              <p className="text-bold">
                 Total emissions data by pollutant type
               </p>
               <Button
@@ -552,7 +552,7 @@ function OlefinsFlareEmission() {
               />
             </div>
             <Table responsive bordered hover>
-              <thead className="table-light">
+              <thead className="table-tb">
                 <tr>
                   <th>Period Start</th>
                   <th>Period End</th>
@@ -590,12 +590,12 @@ function OlefinsFlareEmission() {
           <Card>
             <CardHeader>
               <CardTitle tag="h2">E-MACT NHV Deviation Log</CardTitle>
-              <p className="text-muted">
+              <p className="text-bold">
                 Records of flare gas NHV deviations below 300 BTU/SCF
               </p>
             </CardHeader>
             <Table responsive bordered hover>
-              <thead className="table-light">
+              <thead className="table-tb">
                 <tr>
                   <th>Flare</th>
                   <th>Start Date & Time</th>

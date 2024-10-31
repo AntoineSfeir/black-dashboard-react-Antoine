@@ -384,7 +384,7 @@ function HIPAFlareEmission() {
             </CardBody>
           </Card>
         </Col>
-        <Button color="Secondary" onClick={generateReport}>
+        <Button color="Primary" onClick={generateReport}>
           Generate Automated Report
         </Button>
       </Row>

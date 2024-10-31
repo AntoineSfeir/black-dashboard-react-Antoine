@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
+import { saveAs } from "file-saver";
 import { Line } from "react-chartjs-2";
 import {
   Button,
@@ -18,6 +19,9 @@ import {
   Table,
   Row,
   Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
   UncontrolledTooltip,
 } from "reactstrap";
 import {
@@ -101,6 +105,48 @@ function Dashboard(props) {
     },
   ];
 
+  const [modal, setModal] = useState(false);
+  const [selectedAlert, setSelectedAlert] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("Location");
+
+  // Toggles modal for alert details
+  const toggleModal = () => setModal(!modal);
+
+  // Search alerts based on search term
+  const handleSearch = (e) => setSearchTerm(e.target.value.toLowerCase());
+
+  // Export alerts to CSV
+  const exportAlerts = () => {
+    const csvContent = [
+      ["Problem Area", "Reported By", "Location", "Description", "Severity"],
+      ...alerts.map((alert) => [
+        alert.problemArea,
+        alert.reportedBy,
+        alert.location,
+        alert.description,
+        alert.severity,
+      ]),
+    ]
+      .map((e) => e.join(","))
+      .join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "alerts_report.csv");
+  };
+
+  // Function to open alert details in modal
+  const openAlertDetails = (alert) => {
+    setSelectedAlert(alert);
+    toggleModal();
+  };
+
+    // Sort alerts based on selected option
+    const sortedAlerts = [...alerts].sort((a, b) =>
+      sortOption === "Location"
+        ? a.location.localeCompare(b.location)
+        : a.problemArea.localeCompare(b.problemArea)
+    );
+
   return (
     <>
       <div className="content">
@@ -171,27 +217,25 @@ function Dashboard(props) {
           {/* Task section */}
           <Col lg="6" md="12">
             <Card className="card-tasks">
-              <CardHeader>
-                <h6 className="title d-inline">Tasks (5)</h6>
-                <p className="card-category d-inline"> today</p>
-                <UncontrolledDropdown>
-                  <DropdownToggle
-                    caret
-                    className="btn-icon"
-                    color="link"
-                    data-toggle="dropdown"
-                    type="button"
-                  >
-                    <i className="tim-icons icon-settings-gear-63" />
-                  </DropdownToggle>
-                  <DropdownMenu aria-labelledby="dropdownMenuLink" right>
-                    <DropdownItem>Action</DropdownItem>
-                    <DropdownItem>Another action</DropdownItem>
-                    <DropdownItem>Something else</DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
+            <CardHeader>
+                <CardTitle tag="h4">Alerts & Notifications</CardTitle>
+                <ButtonGroup>
+                  <Button onClick={() => filterRows("All")}>All</Button>
+                  <Button onClick={() => filterRows("High")}>High</Button>
+                  <Button onClick={() => filterRows("Medium")}>Medium</Button>
+                </ButtonGroup>
+                <Input
+                  type="text"
+                  placeholder="Search Alerts..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="mt-3"
+                />
+                <Button color="info" onClick={exportAlerts} className="mt-3">
+                  Download Alerts Report
+                </Button>
               </CardHeader>
-              <CardBody>
+              <CardBody style={{ maxHeight: "400px", overflowY: "auto" }}>
                 <div className="table-full-width table-responsive">
                   <Table>
                     <tbody>
@@ -357,7 +401,7 @@ function Dashboard(props) {
           </Col>
           {/* Alerts Section */}
           <Col lg="6" md="12">
-            <Card>
+            <Card className="card-tasks">
               <CardHeader>
                 <CardTitle tag="h4">Alerts & Notifications</CardTitle>
                 <ButtonGroup>
@@ -365,9 +409,32 @@ function Dashboard(props) {
                   <Button onClick={() => filterRows("High")}>High</Button>
                   <Button onClick={() => filterRows("Medium")}>Medium</Button>
                 </ButtonGroup>
+                <Input
+                  type="text"
+                  placeholder="Search Alerts..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="mt-3"
+                />
+                <Button color="info" onClick={exportAlerts} className="mt-3">
+                  Download Alerts Report
+                </Button>
+                <UncontrolledDropdown className="mt-3">
+                  <DropdownToggle caret color="secondary">
+                    Sort Alerts by
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem onClick={() => setSortOption("Location")}>
+                      Location
+                    </DropdownItem>
+                    <DropdownItem onClick={() => setSortOption("Problem Area")}>
+                      Problem Area
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </CardHeader>
-              <CardBody>
-                <Table className="tablesorter" responsive>
+              <CardBody style={{ maxHeight: "400px", overflowY: "auto" }}>
+                <Table responsive>
                   <thead className="text-primary">
                     <tr>
                       <th>Problem Area</th>
@@ -378,20 +445,23 @@ function Dashboard(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {alerts
+                    {sortedAlerts
                       .filter(
                         (alert) => filter === "All" || alert.severity === filter
                       )
+                      .filter(
+                        (alert) =>
+                          alert.problemArea.toLowerCase().includes(searchTerm) ||
+                          alert.description.toLowerCase().includes(searchTerm) ||
+                          alert.location.toLowerCase().includes(searchTerm)
+                      )
                       .map((alert, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={() => openAlertDetails(alert)} style={{ cursor: "pointer" }}>
                           <td>{alert.problemArea}</td>
                           <td>{alert.reportedBy}</td>
                           <td>{alert.location}</td>
                           <td>{alert.description}</td>
-                          <td
-                            className="text-center"
-                            style={{ color: alert.severityColor }}
-                          >
+                          <td className="text-center" style={{ color: alert.severityColor }}>
                             <i className={alert.iconClass} /> {alert.severity}
                           </td>
                         </tr>
@@ -401,6 +471,21 @@ function Dashboard(props) {
               </CardBody>
             </Card>
           </Col>
+          {/* Alert Details Modal */}
+          <Modal isOpen={modal} toggle={toggleModal}>
+            <ModalHeader toggle={toggleModal}>Alert Details</ModalHeader>
+            <ModalBody>
+              {selectedAlert && (
+                <>
+                  <p><strong>Problem Area:</strong> {selectedAlert.problemArea}</p>
+                  <p><strong>Reported By:</strong> {selectedAlert.reportedBy}</p>
+                  <p><strong>Location:</strong> {selectedAlert.location}</p>
+                  <p><strong>Description:</strong> {selectedAlert.description}</p>
+                  <p><strong>Severity:</strong> <span style={{ color: selectedAlert.severityColor }}>{selectedAlert.severity}</span></p>
+                </>
+              )}
+            </ModalBody>
+          </Modal>
         </Row>
       </div>
     </>
