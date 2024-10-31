@@ -2500,7 +2500,6 @@ textarea.form-control.is-invalid {
   color: #525f7f;
   text-align: center;
   vertical-align: middle;
-  user-select: none;
   background-color: transparent;
   border: 1px solid transparent;
   padding: 11px 40px;
@@ -4092,7 +4091,7 @@ input[type="button"].btn-block {
   ~ .custom-control-label::before {
   border-color: #e14eca;
   background-color: #e14eca;
-  box-shadow: ;
+  box-shadow: #e14eca;
 }
 
 .custom-checkbox
