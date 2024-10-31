@@ -224,13 +224,6 @@ function Dashboard(props) {
                   <Button onClick={() => filterRows("High")}>High</Button>
                   <Button onClick={() => filterRows("Medium")}>Medium</Button>
                 </ButtonGroup>
-                <Input
-                  type="text"
-                  placeholder="Search Tasks..."
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  className="mt-3"
-                />
               </CardHeader>
               <CardBody style={{ maxHeight: "400px", overflowY: "auto" }}>
                 <div className="table-full-width table-responsive">
