@@ -218,7 +218,7 @@ function Dashboard(props) {
           <Col lg="6" md="12">
             <Card className="card-tasks">
             <CardHeader>
-                <CardTitle tag="h4">Alerts & Notifications</CardTitle>
+                <CardTitle tag="h4">Tasks</CardTitle>
                 <ButtonGroup>
                   <Button onClick={() => filterRows("All")}>All</Button>
                   <Button onClick={() => filterRows("High")}>High</Button>
@@ -226,14 +226,11 @@ function Dashboard(props) {
                 </ButtonGroup>
                 <Input
                   type="text"
-                  placeholder="Search Alerts..."
+                  placeholder="Search Tasks..."
                   value={searchTerm}
                   onChange={handleSearch}
                   className="mt-3"
                 />
-                <Button color="info" onClick={exportAlerts} className="mt-3">
-                  Download Alerts Report
-                </Button>
               </CardHeader>
               <CardBody style={{ maxHeight: "400px", overflowY: "auto" }}>
                 <div className="table-full-width table-responsive">
